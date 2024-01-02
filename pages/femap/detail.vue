@@ -82,7 +82,7 @@
 
 .desc {
 	font-size: 16px;
-	color:#333;
+	color:#fff;
 	margin-bottom: 10px;
 }
 
