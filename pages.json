@@ -1,0 +1,32 @@
+{
+	"pages": [
+		{
+			"path": "pages/femap/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/femap/detail",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/femap/list",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationStyle":"custom",
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "white",
+		"navigationBarBackgroundColor": "@bg",
+		"backgroundColor": "@bg"
+	}
+}
