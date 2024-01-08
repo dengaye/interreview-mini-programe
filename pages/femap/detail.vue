@@ -34,6 +34,8 @@
 <script>
 	import ezpage from "../../components/ezpage.vue"
 	import mpHtml from "../../components/mp-html/mp-html.vue"
+
+	import { getDetailStorageSync } from '../../utils/storage'
 	
 	export default {
 		components:{
@@ -54,6 +56,11 @@
 		},
 		onLoad(options){
 			var id  =  options.id;
+			const detailInfo = getDetailStorageSync(id);
+			if (detailInfo) {
+				this.detail = detailInfo;
+				return;
+			}
 			uniCloud.callFunction({
 				name:"femap",
 				data:{

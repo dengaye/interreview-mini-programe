@@ -52,6 +52,16 @@ import ezpage from "../../components/ezpage.vue"
 import ezflycard from "../../components/ezflycard.vue"
 import eznavigationbar from "../../components/eznaviagtionbar.vue"
 
+import { 
+	setDetailStorageSync, 
+	setTagListStorageSync,
+	getTagListStorageSync,
+	setRandomListStorageSync,
+	getRandomListStorageSync,
+	removeOutdateAllListStorage,
+	removeCurrentRandomListStorageSync,
+} from '../../utils/storage'
+
 export default {
 	components: {
 		ezpage,
@@ -68,6 +78,7 @@ export default {
 		}
 	},
 	onLoad() {
+		removeOutdateAllListStorage();
 		this.cardWidth = uni.getSystemInfoSync().screenWidth - 100;
 		this.requestTagList();
 		this.requestRandomlist();
@@ -94,6 +105,7 @@ export default {
 			return str;
 		},
 		onRandomlistItemTap(item) {
+			setDetailStorageSync(item);
 			uni.navigateTo({
 				url: '/pages/femap/detail?id=' + item._id
 			});
@@ -112,6 +124,7 @@ export default {
 			});
 		},
 		btnGetRandom() {
+			removeCurrentRandomListStorageSync();
 			this.requestRandomlist();
 		},
 		btnGoList(item) {
@@ -120,24 +133,38 @@ export default {
 			});
 		},
 		requestRandomlist() {
+			const storageData = getRandomListStorageSync();
+			if (storageData) {
+				this.randomlist = storageData;
+				return;
+			}
 			uniCloud.callFunction({
 				name: "femap",
 				data: {
 					action: "random",
 				},
 				success: (res) => {
-					this.randomlist = res.result.data;
+					const data = res.result.data;
+					setRandomListStorageSync(data)
+					this.randomlist = data;
 				}
 			})
 		},
-		requestTagList(last) {
+		requestTagList() {
+			const storageData = getTagListStorageSync();
+			if (storageData) {
+				this.taglist = storageData;
+				return;
+			}
 			uniCloud.callFunction({
 				name: "femap",
 				data: {
 					action: "tags"
 				},
 				success: (res) => {
-					this.taglist = res.result.data;
+					const list = res.result.data;
+					setTagListStorageSync(list)
+					this.taglist = list;
 				}
 			})
 		}

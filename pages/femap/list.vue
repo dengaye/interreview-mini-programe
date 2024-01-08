@@ -25,6 +25,8 @@
 
 <script>
 	import ezpage from "../../components/ezpage.vue"
+
+	import { setTagInfoStorageSync, getTagInfoStorageSync } from '../../utils/storage'
 	
 	export default {
 		components:{
@@ -47,7 +49,18 @@
 			if(this.list.length>0)this.requestList(this.list[this.list.length-1]._id);
 		},
 		onLoad(options){
-			this.tagid  =  options.tagid;
+			const tagId = options.tagid;
+			this.tagid = tagId;
+
+			const tagStotage = getTagInfoStorageSync(tagId);
+
+			this.requestList();
+
+			if (tagStotage?.tagName) {
+				this.title = tagStotage.tagName
+				return ;
+			}
+
 			uniCloud.callFunction({
 				name:"femap",
 				data:{
@@ -55,10 +68,11 @@
 					tagid:this.tagid
 				},
 				success:(res)=>{
-					this.title=res.result.data.tagName
+					const tagData = res.result.data;
+					setTagInfoStorageSync(tagData);
+					this.title = tagData.tagName
 				}
 			})
-			this.requestList();
 		},
 		methods: {
 			getCategoryCN(category){
