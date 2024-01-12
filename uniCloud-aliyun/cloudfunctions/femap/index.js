@@ -1,5 +1,11 @@
 'use strict';
 
+// 表名
+const UNICLOUD_TABLE_NAMES = {
+  femap: 'femap',
+  interview_collect: 'interview_collect',
+}
+
 const tags = [
 		{
 			"id": 10,
@@ -93,7 +99,7 @@ const tags = [
 		// }
 ];
 
-function responseData(errcode,errmsg,data={}){
+function responseData(errcode,errmsg,data=  {}){
 	return {
 		errcode:errcode,
 		errmsg:errmsg,
@@ -101,65 +107,91 @@ function responseData(errcode,errmsg,data={}){
 	}
 }
 
+const ACTIONS = {
+	list: 'list',
+	random: 'random',
+	detail: 'detail',
+	tags: 'tags',
+	taginfo: 'taginfo',
+}
 
 exports.main = async (event, context) => {
 	//event为客户端上传的参数
 	console.log('event : ', event)
 	
 	//返回数据给客户端
-	
-	var db  =  uniCloud.database();
+	const db  =  uniCloud.database();
 	const dbCmd = db.command;
 	
 	let dbRes;
-	if(event.action==='list'){
-		
-		let whereOption = {
-			// category:dbCmd.neq('Choice')
-		};
-		
-		if(event.last)whereOption['_id']=dbCmd.gt(event.last);
-		
-		console.log(event);
-		
-		if(event.tagid)whereOption['tagId']=dbCmd.eq(parseInt(event.tagid));
-		
-		dbRes = await db.collection('femap').where(whereOption).field({title:true,category:true,level:true}).limit(20).get();
-		
-		return responseData(0,'',dbRes.data);
-	}else if(event.action==='random'){
-		
-		dbRes = await db.collection('femap')
-						.aggregate()
-						.sample({
-							size: 3
-						})
-						.end();
-		
-		return responseData(0,'',dbRes.data);	
-	}else if(event.action==='detail'){
-		if(!event.id)return responseData(1,'没有找到题目');
-		
-		dbRes =  await db.collection('femap').where({
-			_id:dbCmd.eq(event.id)
-		}).field({exerciseKey:false}).limit(1).get();
-		
-		return responseData(0,'',dbRes.data[0]);
-	}else if(event.action==='tags'){
-		return responseData(0,'',tags);
-	}else if(event.action==='taginfo'){
-		var tagInfo;
-		for(let i in tags){
-			if(tags[i].id==event.tagid){
-				tagInfo=tags[i];
-				break;
+	switch (event.action) {
+		case ACTIONS.list: {
+			let whereOption = {
+				// category:dbCmd.neq('Choice')
+			};
+			if(event.last) {
+				whereOption['_id'] = dbCmd.gt(event.last);
 			}
+
+			if(event.tagid) {
+				whereOption['tagId'] = dbCmd.eq(parseInt(event.tagid));
+			}
+
+			dbRes = await db.collection('femap')
+				.where(whereOption)
+				.field({
+					title:true,category:true,level:true
+				})
+				.limit(20)
+				.get();
+			
+			return responseData(0,'',dbRes.data);
 		}
-		
-		console.log('tagInfo::' ,tagInfo)
-		
-		return responseData(0,'',tagInfo);
+		case ACTIONS.random: {
+			dbRes = await db.collection('femap')
+				.aggregate()
+				.sample({
+					size: 3
+				})
+				.end();
+
+			return responseData(0, '', dbRes.data);
+		}
+		case ACTIONS.detail: {
+			if(!event.id) {
+				return responseData(1,'没有找到题目');
+			}
+
+			dbRes =  await db.collection('femap').where({
+				_id: dbCmd.eq(event.id)
+			}).field({ exerciseKey: false }).limit(1).get();
+
+			// 查看是否有收藏
+			const collectDb = await db.collection(UNICLOUD_TABLE_NAMES.interview_collect).where({
+				question_id: dbCmd.eq(event.id)
+			}).get();
+
+			if (collectDb && collectDb.data && collectDb.data.length > 0) {
+				dbRes.data[0].collected = true;
+			}
+			
+			return responseData(0,'',dbRes.data[0]);
+		}
+		case ACTIONS.tags: {
+			return responseData(0,'',tags);
+		}
+		case ACTIONS.taginfo: {
+			let tagInfo;
+			for(let i in tags){
+				if(tags[i].id == event.tagid){
+					tagInfo = tags[i];
+					break;
+				}
+			}
+			
+			return responseData(0,'',tagInfo);
+		}
+		default: 
+			return;
 	}
-	
-	return;
 };

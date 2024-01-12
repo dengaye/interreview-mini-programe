@@ -1,0 +1,7 @@
+{
+  "name": "interview-collect",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

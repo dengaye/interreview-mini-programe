@@ -9,6 +9,7 @@
 					<view class="title">
 						{{detail.title}}
 					</view>
+					<collection :questionId="detail._id" :collected="detail.collected" @updateDetail="initData"/>
 					<view v-if="detail.desc" class="desc">
 						<mp-html :content="detail.desc" :markdown="true" />
 					</view>
@@ -34,47 +35,51 @@
 <script>
 	import ezpage from "../../components/ezpage.vue"
 	import mpHtml from "../../components/mp-html/mp-html.vue"
+	import collection from '../../components/collection.vue'
 
 	import { getDetailStorageSync } from '../../utils/storage'
 	
 	export default {
 		components:{
 			ezpage,
-			mpHtml
+			mpHtml,
+			collection,
 		},
 		data() {
 			return {
-				detail:null,
-				showExplanation:false
+				detail: null,
+				showExplanation: false
 			}
 		},
 		onShareAppMessage() {
 			return {
-				title: this.detail.title+' | 前端面试题',
-				path: '/pages/femap/detail?id='+this.detail._id
+				title: `${this.detail.title} | 前端面试题`,
+				path: `/pages/femap/detail?id=${this.detail._id}`,
 			}
 		},
 		onLoad(options){
-			var id  =  options.id;
+			const id  =  options.id;
 			const detailInfo = getDetailStorageSync(id);
 			if (detailInfo) {
 				this.detail = detailInfo;
 				return;
 			}
-			uniCloud.callFunction({
-				name:"femap",
-				data:{
-					action:"detail",
-					id:id
-				},
-				success:(res)=>{
-					console.log(res);
-					this.detail=res.result.data;
-				}
-			})
+			this.initData(id);
 		},
 		methods: {
-			
+			initData(_id) {
+				const id = _id || this.detail._id;
+				uniCloud.callFunction({
+					name:"femap",
+					data:{
+						action: "detail",
+						id,
+					},
+					success: (res) => {
+						this.detail = res.result.data;
+					}
+				})
+			}
 		}
 	}
 </script>
@@ -82,7 +87,7 @@
 <style scoped>
 .title {
 	font-size: 18px;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 	word-break: break-all;
 	font-weight: bold;
 }
@@ -100,6 +105,12 @@
 	height:100px;
 	line-height: 100px;
 	text-align: center;
+}
+
+.desc,
+.explain-box,
+.markdown {
+	margin-top: 10px;
 }
 
 .markdown {

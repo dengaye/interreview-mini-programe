@@ -20,13 +20,53 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/collect/collect",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"globalStyle": {
-		"navigationStyle":"custom",
+		"navigationStyle": "custom",
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "white",
 		"navigationBarBackgroundColor": "@bg",
 		"backgroundColor": "@bg"
+	},
+	"condition": { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
+	},
+	"tabBar": {
+		"color": "#ffffff",
+		"borderStyle": "black",
+		"backgroundColor": "#202123",
+		"spacing": "5px",
+		"height": "50px",
+		"selectedColor": "#f7d05f",
+		"fontSize": "30px",
+		"list": [
+			{
+				"text": "首页",
+				"iconPath": "",
+				"selectedIconPath": "",
+				"pagePath": "pages/femap/index"
+			},
+			{
+				"text": "收藏",
+				"iconPath": "",
+				"selectedIconPath": "",
+				"pagePath": "pages/collect/collect"
+			}
+		]
 	}
 }
