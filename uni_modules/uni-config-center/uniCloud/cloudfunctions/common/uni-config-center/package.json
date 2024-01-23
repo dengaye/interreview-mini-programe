@@ -6,5 +6,7 @@
   "keywords": [],
   "author": "DCloud",
   "license": "Apache-2.0",
-  "dependencies": {}
+  "dependencies": {
+    "uni-id": "../../../../../uni-id/uniCloud/cloudfunctions/common/uni-id"
+  }
 }
