@@ -27,11 +27,14 @@ exports.main = async (event, context) => {
 
 	switch (event.action) {
 		case ACTIONS.list: {
-			const interreviewDbRes = await db.collection(INTERVIEW_COLLECT_TABLE_NAME).limit(20).get();
+			const params = event.body;
+			const interreviewDbRes = await db.collection(INTERVIEW_COLLECT_TABLE_NAME).where({
+				user_id: dbCmd.eq(params.user_id),
+			}).limit(20).get();
 			if (interreviewDbRes.data && interreviewDbRes.data.length > 0) {
 				const questionIds = interreviewDbRes.data.map(item => item.question_id);
 				dbRes = await db.collection(FEMAP_TABLE_NAME).where({
-					_id: dbCmd.in(questionIds)
+					_id: dbCmd.in(questionIds),
 				}).field({ title: true, category: true, level: true}).get();
 			} else {
 				dbRes = interreviewDbRes;
@@ -40,7 +43,10 @@ exports.main = async (event, context) => {
 		}
 		case ACTIONS.add: {
 			const postData = event.body;
-			const dbRes = await db.collection(INTERVIEW_COLLECT_TABLE_NAME).add({ question_id: postData.question_id });
+			const dbRes = await db.collection(INTERVIEW_COLLECT_TABLE_NAME).add({ 
+				question_id: postData.question_id,
+				user_id: postData.user_id,
+			});
 			return responseData(0, '', dbRes.data);
 		}
 		case ACTIONS.remove: {

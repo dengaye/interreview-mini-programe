@@ -1,68 +1,122 @@
 {
-	"pages": [
-		{
-			"path": "pages/femap/index",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/femap/detail",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/femap/list",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/collect/collect",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		}
-	],
-	"globalStyle": {
-		"navigationStyle": "custom",
-		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "white",
-		"navigationBarBackgroundColor": "@bg",
-		"backgroundColor": "@bg"
-	},
-	"condition": { //模式配置，仅开发期间生效
-		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [
-			{
-				"name": "", //模式名称
-				"path": "", //启动页面，必选
-				"query": "" //启动参数，在页面的onLoad函数里面得到
-			}
-		]
-	},
-	"tabBar": {
-		"color": "#ffffff",
-		"borderStyle": "black",
-		"backgroundColor": "#202123",
-		"spacing": "5px",
-		"height": "50px",
-		"selectedColor": "#f7d05f",
-		"fontSize": "30px",
-		"list": [
-			{
-				"text": "首页",
-				"pagePath": "pages/femap/index"
-			},
-			{
-				"text": "收藏",
-				"pagePath": "pages/collect/collect"
-			}
-		]
-	}
+  "pages": [
+    {
+      "path": "pages/femap/index",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/femap/detail",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/femap/list",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/collect/collect",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      },
+      "needLogin": true
+    },
+    {
+      "path": "uni_modules/uni-id-pages/pages/userinfo/deactivate/deactivate",
+      "style": {
+        "navigationBarTitleText": "注销账号"
+      }
+    },
+    {
+      "path": "uni_modules/uni-id-pages/pages/login/login-withoutpwd",
+      "style": {
+        "navigationBarTitleText": ""
+      }
+    },
+    {
+      "path": "uni_modules/uni-id-pages/pages/login/login-withpwd",
+      "style": {
+        "navigationBarTitleText": ""
+      }
+    },
+    {
+      "path": "uni_modules/uni-id-pages/pages/register/register",
+      "style": {
+        "navigationBarTitleText": "注册"
+      }
+    },
+    {
+      "path": "uni_modules/uni-id-pages/pages/retrieve/retrieve",
+      "style": {
+        "navigationBarTitleText": "重置密码"
+      }
+    },
+    {
+      "path": "uni_modules/uni-id-pages/pages/common/webview/webview",
+      "style": {
+        "enablePullDownRefresh": false,
+        "navigationBarTitleText": ""
+      }
+    },
+    {
+      "path": "uni_modules/uni-id-pages/pages/userinfo/change_pwd/change_pwd",
+      "style": {
+        "enablePullDownRefresh": false,
+        "navigationBarTitleText": "修改密码"
+      }
+    },
+    {
+      "path": "uni_modules/uni-id-pages/pages/register/register-admin",
+      "style": {
+        "enablePullDownRefresh": false,
+        "navigationBarTitleText": "注册管理员账号"
+      }
+    },
+    {
+      "path": "uni_modules/uni-id-pages/pages/userinfo/set-pwd/set-pwd",
+      "style": {
+        "enablePullDownRefresh": false,
+        "navigationBarTitleText": "设置密码"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "white",
+    "navigationBarBackgroundColor": "@bg",
+    "backgroundColor": "@bg"
+  },
+  "tabBar": {
+    "color": "#ffffff",
+    "borderStyle": "black",
+    "backgroundColor": "#202123",
+    "selectedColor": "#f7d05f",
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/femap/index"
+      },
+      {
+        "text": "收藏",
+        "pagePath": "pages/collect/collect"
+      }
+    ]
+  },
+  "uniIdRouter": {
+    "loginPage": "/uni_modules/uni-id-pages/pages/login/login-withpwd", 
+    "needLogin": [
+			"pages/collect/collect",
+      "/uni_modules/uni-id-pages/pages/userinfo/userinfo"
+		],
+		"resToLogin": true
+  }
 }

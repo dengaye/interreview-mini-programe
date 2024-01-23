@@ -76,3 +76,25 @@ mp-weixin
 ```
 
 https://uniapp.dcloud.net.cn/tutorial/darkmode.html
+
+
+- 登录
+
+-- uniIdRouter
+
+uniIdRouter 是一个运行在前端的、对前端页面访问权限路由进行控制的方案。
+
+https://doc.dcloud.net.cn/uniCloud/uni-id/summary.html#uni-id-router
+
+```js
+// 需要加上 /un 不能是 uni_modules
+  "uniIdRouter": {
+    "loginPage": "/uni_modules/uni-id-pages/pages/login/login-withpwd", 
+    "needLogin": [
+			"/pages/collect/collect",
+      "/uni_modules/uni-id-pages/pages/userinfo/userinfo"
+		],
+		"resToLogin": true
+  }
+
+```

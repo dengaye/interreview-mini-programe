@@ -9,7 +9,7 @@
 					<view class="title">
 						{{detail.title}}
 					</view>
-					<collection :questionId="detail._id" :collected="detail.collected" @updateDetail="initData"/>
+					<collection v-if="hasLogin" :questionId="detail._id" :collected="detail.collected" @updateDetail="initData"/>
 					<view v-if="detail.desc" class="desc">
 						<mp-html :content="detail.desc" :markdown="true" />
 					</view>
@@ -37,6 +37,8 @@
 	import mpHtml from "../../components/mp-html/mp-html.vue"
 	import collection from '../../components/collection.vue'
 
+	import { store } from 'uni_modules/uni-id-pages/common/store.js'
+
 	import { getDetailStorageSync } from '../../utils/storage'
 	
 	export default {
@@ -48,7 +50,8 @@
 		data() {
 			return {
 				detail: null,
-				showExplanation: false
+				showExplanation: false,
+				hasLogin: store.hasLogin,
 			}
 		},
 		onShareAppMessage() {
@@ -65,6 +68,9 @@
 				return;
 			}
 			this.initData(id);
+		},
+		onShow() {
+			this.hasLogin = store.hasLogin;
 		},
 		methods: {
 			initData(_id) {

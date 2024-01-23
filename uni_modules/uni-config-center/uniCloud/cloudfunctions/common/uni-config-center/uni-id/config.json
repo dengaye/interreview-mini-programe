@@ -1,0 +1,17 @@
+{
+  "passwordSecret": [
+    {
+      "type": "hmac-sha256",
+      "version": 1
+    }
+  ],
+	"passwordStrength": "medium",
+  "tokenSecret": "1q2w3e4r5t6y7u8i9o0p-[",
+  "tokenExpiresIn": 7200,
+  "passwordErrorLimit": 6, 
+  "passwordErrorRetryTime": 3600,
+  "mp-weixin": {
+    "tokenExpiresIn": 259200,
+    "tokenExpiresThreshold": 86400
+  }
+}

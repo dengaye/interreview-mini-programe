@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import { store } from 'uni_modules/uni-id-pages/common/store.js'
+
 import { UNICLOUD_FUNCTION_NAMES, INTERREVIEW_FUNCTION_ACTIONS } from '../constants/common'
 
 export default {
@@ -42,6 +44,7 @@ export default {
           action: INTERREVIEW_FUNCTION_ACTIONS.add,
           body: {
             question_id: this.questionId,
+            user_id: store.userInfo._id,
           }
         },
         success: (res) => {
