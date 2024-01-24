@@ -114,8 +114,7 @@
   "uniIdRouter": {
     "loginPage": "/uni_modules/uni-id-pages/pages/login/login-withpwd", 
     "needLogin": [
-			"pages/collect/collect",
-      "/uni_modules/uni-id-pages/pages/userinfo/userinfo"
+			"pages/collect/collect"
 		],
 		"resToLogin": true
   }
